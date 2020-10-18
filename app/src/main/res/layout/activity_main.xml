@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_medium"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:id="@+id/intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/intro"
+            android:textSize="@dimen/font_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/choose_unknown_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/choose_unknown"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/intro"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_unknown"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/choose_unknown_tip">
+
+            <RadioButton
+                android:id="@+id/rbPastValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/past_value" />
+
+            <RadioButton
+                android:id="@+id/rbFutureValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/future_value" />
+
+            <RadioButton
+                android:id="@+id/rbTerm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/term" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/editTextValuesGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/radio_group_unknown"
+            android:orientation="horizontal"
+            >
+
+            <EditText
+                android:id="@+id/etPastValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:layout_weight="1"
+                android:hint="@string/past_value_hint"
+                />
+
+            <EditText
+                android:id="@+id/etFutureValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:layout_weight="1"
+                android:hint="@string/future_value_hint"
+                />
+
+            <EditText
+                android:id="@+id/etTerm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:hint="@string/term_in_days"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/interestRateHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/interest_rate"
+            app:layout_constraintTop_toBottomOf="@id/editTextValuesGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:textStyle="bold"
+            android:textSize="@dimen/font_medium"
+            />
+
+        <EditText
+            android:id="@+id/etInterestRate"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/interestRateHint"
+            app:layout_constraintTop_toTopOf="@id/interestRateHint"
+            app:layout_constraintBottom_toBottomOf="@id/interestRateHint"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:inputType="numberDecimal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/interestRateHint"
+            app:layout_constraintBottom_toBottomOf="@id/interestRateHint"
+            app:layout_constraintStart_toEndOf="@id/etInterestRate"
+            android:text="@string/percent"
+            android:textStyle="bold"
+            android:textSize="@dimen/font_medium"
+            />
+
+        <CheckBox
+            android:id="@+id/cbIfInflation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/interestRateHint"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/if_inflation"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout
+            android:id="@+id/llInflationParams"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/cbIfInflation"
+            app:layout_constraintTop_toTopOf="@id/cbIfInflation"
+            app:layout_constraintBottom_toBottomOf="@id/cbIfInflation"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            >
+
+            <EditText
+                android:id="@+id/etInflation"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/cbIfInflation"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/percent"
+                android:textStyle="bold"
+                android:textSize="@dimen/font_medium"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calculate"
+            app:layout_constraintTop_toBottomOf="@id/cbIfInflation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/margin_medium"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

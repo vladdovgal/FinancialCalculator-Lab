@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Financial calculator</string>
+    <string name="intro">Привіт, я - фінансовий калькулятор. Моя основна задача - розрахунки за складною схемою нарахування відсотків з використанням відсоткової ставки.</string>
+    <string name="choose_unknown">Виберіть невідоме значення:</string>
+    <string name="past_value">PV</string>
+    <string name="future_value">FV</string>
+    <string name="term">n</string>
+    <string name="past_value_hint">Past value</string>
+    <string name="future_value_hint">Future value</string>
+    <string name="term_in_days">Term (in days)</string>
+    <string name="interest_rate">Відсоткова ставка :</string>
+    <string name="percent">%</string>
+    <string name="if_inflation">З врахуванням інфляції</string>
+    <string name="calculate">Розрахувати</string>
+</resources>
