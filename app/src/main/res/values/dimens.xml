@@ -3,4 +3,5 @@
     <dimen name="margin_medium">15dp</dimen>
     <dimen name="padding_medium">20dp</dimen>
     <dimen name="font_medium">18sp</dimen>
+    <dimen name="font_large">30sp</dimen>
 </resources>

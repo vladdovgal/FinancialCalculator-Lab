@@ -12,4 +12,11 @@
     <string name="percent">%</string>
     <string name="if_inflation">З врахуванням інфляції</string>
     <string name="calculate">Розрахувати</string>
+    <string name="fv_equals">FV = %s</string>
+    <string name="pv_equals">PV = %s</string>
+    <string name="n_equals">n = %s років і %s днів</string>
+
+    <!-- Errors -->
+    <string name="empty_field">Це поле не може бути пустим</string>
+
 </resources>
