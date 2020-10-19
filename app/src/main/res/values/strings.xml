@@ -15,8 +15,10 @@
     <string name="fv_equals">FV = %s</string>
     <string name="pv_equals">PV = %s</string>
     <string name="n_equals">n = %s років і %s днів</string>
+    <string name="discount_rate">Еквівалентна ефективна облікова ставка: %s  %%</string>
 
     <!-- Errors -->
     <string name="empty_field">Це поле не може бути пустим</string>
+    <string name="find_discount_rate">Знайти еквівалентну ефективну облікову ставку</string>
 
 </resources>

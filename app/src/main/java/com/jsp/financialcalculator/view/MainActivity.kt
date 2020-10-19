@@ -7,6 +7,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jsp.financialcalculator.R
+import com.jsp.financialcalculator.utils.ChartData
 import com.jsp.financialcalculator.utils.Parameter
 import com.jsp.financialcalculator.utils.WaysOfDecision
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,28 +45,35 @@ class MainActivity : AppCompatActivity() {
     private fun findSolution() {
         if (validateInput()) return
 
+        var inflation : Double = 0.0
+        if (etInflation.text.isNotEmpty() && cbIfInflation.isChecked) {
+            inflation = etInflation.text.toString().toDouble()
+        }
         when(unknownVariable) {
             Parameter.FV -> {
                 result = resources.getString(R.string.fv_equals,
-                    WaysOfDecision.findFutureValue(pastValue, term, interestRate)
+                    WaysOfDecision.findFutureValue(pastValue, term, interestRate, inflation)
                         .round(4)
                         .toString())
             }
             Parameter.PV -> {
                 result = resources.getString(R.string.pv_equals,
-                    WaysOfDecision.findPastValue(futureValue, term, interestRate)
+                    WaysOfDecision.findPastValue(futureValue, term, interestRate, inflation)
                         .round(4)
                         .toString())
             }
             Parameter.n -> {
                 result = resources.getString(R.string.n_equals,
-                    WaysOfDecision.findTerm(pastValue, futureValue, interestRate).first.toString(),
-                    WaysOfDecision.findTerm(pastValue, futureValue, interestRate).second.toString())
+                    WaysOfDecision.findTerm(pastValue, futureValue, interestRate, inflation).first.toString(),
+                    WaysOfDecision.findTerm(pastValue, futureValue, interestRate, inflation).second.toString())
             }
             else -> Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show()
         }
         tvMainResult.text = result
+        tvDiscountRate.text = resources.getString(R.string.discount_rate,
+            WaysOfDecision.calculateEquivalentDiscountRate(interestRate).round(2).toString())
         tvMainResult.visibility = View.VISIBLE
+        ChartData.tabulateFutureValue(pastValue,  interestRate, term, inflation)
     }
 
     private fun validateInput(): Boolean {
@@ -147,6 +155,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 
+// My extension functions
 fun EditText.clearError() {
     error = null
 }
