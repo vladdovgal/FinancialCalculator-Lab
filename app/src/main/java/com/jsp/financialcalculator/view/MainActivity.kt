@@ -6,6 +6,14 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.anychart.AnyChart
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.anychart.core.cartesian.series.Line
+import com.anychart.data.Set
+import com.anychart.enums.Anchor
+import com.anychart.enums.MarkerType
+import com.anychart.enums.TooltipPositionMode
 import com.jsp.financialcalculator.R
 import com.jsp.financialcalculator.utils.ChartData
 import com.jsp.financialcalculator.utils.Parameter
@@ -39,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         btnCalculate.setOnClickListener {
             findSolution()
         }
-        // todo build chart
     }
 
     private fun findSolution() {
@@ -51,29 +58,48 @@ class MainActivity : AppCompatActivity() {
         }
         when(unknownVariable) {
             Parameter.FV -> {
-                result = resources.getString(R.string.fv_equals,
+                result = resources.getString(
+                    R.string.fv_equals,
                     WaysOfDecision.findFutureValue(pastValue, term, interestRate, inflation)
                         .round(4)
-                        .toString())
+                        .toString()
+                )
             }
             Parameter.PV -> {
-                result = resources.getString(R.string.pv_equals,
+                result = resources.getString(
+                    R.string.pv_equals,
                     WaysOfDecision.findPastValue(futureValue, term, interestRate, inflation)
                         .round(4)
-                        .toString())
+                        .toString()
+                )
             }
             Parameter.n -> {
-                result = resources.getString(R.string.n_equals,
-                    WaysOfDecision.findTerm(pastValue, futureValue, interestRate, inflation).first.toString(),
-                    WaysOfDecision.findTerm(pastValue, futureValue, interestRate, inflation).second.toString())
+                result = resources.getString(
+                    R.string.n_equals,
+                    WaysOfDecision.findTerm(
+                        pastValue,
+                        futureValue,
+                        interestRate,
+                        inflation
+                    ).first.toString(),
+                    WaysOfDecision.findTerm(
+                        pastValue,
+                        futureValue,
+                        interestRate,
+                        inflation
+                    ).second.toString()
+                )
             }
             else -> Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show()
         }
         tvMainResult.text = result
-        tvDiscountRate.text = resources.getString(R.string.discount_rate,
-            WaysOfDecision.calculateEquivalentDiscountRate(interestRate).round(2).toString())
+        tvDiscountRate.text = resources.getString(
+            R.string.discount_rate,
+            WaysOfDecision.calculateEquivalentDiscountRate(interestRate).round(2).toString()
+        )
         tvMainResult.visibility = View.VISIBLE
-        ChartData.tabulateFutureValue(pastValue,  interestRate, term, inflation)
+        val chartData = ChartData.tabulateFutureValue(pastValue, interestRate, term, inflation)
+        buildChart(chartData)
     }
 
     private fun validateInput(): Boolean {
@@ -105,6 +131,49 @@ class MainActivity : AppCompatActivity() {
             etInterestRate.error = resources.getString(R.string.empty_field)
         }
         return false
+    }
+
+    private fun buildChart(data: Map<Int, Double>) {
+
+        val linearChart = AnyChart.line()
+        linearChart.animation(true)
+        linearChart.padding(10.0, 20.0, 5.0, 20.0)
+
+        linearChart.crosshair().enabled(true)
+        linearChart.crosshair()
+            .yLabel(true)
+        linearChart.tooltip().positionMode(TooltipPositionMode.POINT)
+
+        linearChart.title("FV(t)")
+        linearChart.yAxis(0).title("Future value")
+        linearChart.xAxis(0).labels().padding(5.0, 5.0, 5.0, 5.0)
+
+        val dataEntries = mutableListOf<DataEntry>()
+        data.forEach{ (index, value) ->
+            run {
+                dataEntries.add(ValueDataEntry(index, value))
+            }
+        }
+
+        val set = Set.instantiate()
+        set.data(dataEntries)
+        val series1Mapping = set.mapAs("{ x: 'x', value: 'value' }")
+        val series1: Line = linearChart.line(series1Mapping)
+        series1.hovered().markers().enabled(true)
+        series1.hovered().markers()
+            .type(MarkerType.CIRCLE)
+            .size(4.0)
+        series1.tooltip()
+            .position("right")
+            .anchor(Anchor.LEFT_CENTER)
+            .offsetX(5.0)
+            .offsetY(5.0)
+
+        linearChart.legend().enabled(true)
+        linearChart.legend().fontSize(13.0)
+        linearChart.legend().padding(0.0, 0.0, 10.0, 0.0)
+
+        chart.setChart(linearChart)
     }
 
     private fun observeIfInflation() {
