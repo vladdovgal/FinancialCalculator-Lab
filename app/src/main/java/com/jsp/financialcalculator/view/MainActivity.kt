@@ -1,20 +1,16 @@
 package com.jsp.financialcalculator.view
 
-import android.graphics.DashPathEffect
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.jsp.financialcalculator.R
 import com.jsp.financialcalculator.utils.ChartUtils
 import com.jsp.financialcalculator.utils.Parameter
 import com.jsp.financialcalculator.utils.WaysOfDecision
+import com.jsp.financialcalculator.utils.logI
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         var interestRate : Double = 0.0
         var term : Int = 0
         var unknownVariable : Parameter? = null
+        var isRateNominal = false
+        var chargesPerYear = 1
     }
 
     private var result : String = ""
@@ -43,6 +41,22 @@ class MainActivity : AppCompatActivity() {
 
         btnCalculate.setOnClickListener {
             findSolution()
+            logI("Times per year : $chargesPerYear")
+        }
+
+        switchRate.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                isRateNominal = true
+                etTimesPerYear.visibility = View.VISIBLE
+                tvTimes.visibility = View.VISIBLE
+                interestRateHint.text = resources.getString(R.string.nominal_rate)
+            } else {
+                isRateNominal = false
+                etTimesPerYear.visibility = View.INVISIBLE
+                tvTimes.visibility = View.INVISIBLE
+                interestRateHint.text = resources.getString(R.string.interest_rate)
+                etTimesPerYear.setText("")
+            }
         }
     }
 
@@ -57,7 +71,13 @@ class MainActivity : AppCompatActivity() {
             Parameter.FV -> {
                 result = resources.getString(
                     R.string.fv_equals,
-                    WaysOfDecision.findFutureValue(pastValue, term, interestRate, inflation)
+                    WaysOfDecision.findFutureValue(
+                        pastValue,
+                        term,
+                        interestRate,
+                        inflation,
+                        chargesPerYear
+                    )
                         .round(4)
                         .toString()
                 )
@@ -70,7 +90,12 @@ class MainActivity : AppCompatActivity() {
             Parameter.PV -> {
                 result = resources.getString(
                     R.string.pv_equals,
-                    WaysOfDecision.findPastValue(futureValue, term, interestRate, inflation)
+                    WaysOfDecision.findPastValue(
+                        futureValue,
+                        term,
+                        interestRate,
+                        inflation,
+                        chargesPerYear)
                         .round(4)
                         .toString()
                 )
@@ -83,13 +108,15 @@ class MainActivity : AppCompatActivity() {
                         pastValue,
                         futureValue,
                         interestRate,
-                        inflation
+                        inflation,
+                        chargesPerYear
                     ).first.toString(),
                     WaysOfDecision.findTerm(
                         pastValue,
                         futureValue,
                         interestRate,
-                        inflation
+                        inflation,
+                        chargesPerYear
                     ).second.toString()
                 )
                 chart.visibility = View.GONE
@@ -131,6 +158,14 @@ class MainActivity : AppCompatActivity() {
             interestRate = etInterestRate.text.toString().toDouble()
         } else {
             etInterestRate.error = resources.getString(R.string.empty_field)
+        }
+
+        // if using nominal rate
+        chargesPerYear = if(
+            etTimesPerYear.text.isNotEmpty() && etTimesPerYear.text.toString().toInt() != 0) {
+            Integer.parseInt(etTimesPerYear.text.toString())
+        } else {
+            1
         }
         return false
     }

@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.jsp.financialcalculator.R
+import com.jsp.financialcalculator.view.MainActivity.Companion.chargesPerYear
 import com.jsp.financialcalculator.view.round
 
 class ChartUtils(val activity: Activity) {
@@ -20,7 +21,9 @@ class ChartUtils(val activity: Activity) {
                 pastValue = pastValue,
                 interestRate = interestRate,
                 term = i,
-                inflation = inflation)
+                inflation = inflation,
+                chargesPerYear = chargesPerYear
+            )
         }
 
         tabulatedFun.forEach { (index, value) ->

@@ -9,6 +9,7 @@
     <string name="future_value_hint">Future value</string>
     <string name="term_in_days">Term (in days)</string>
     <string name="interest_rate">Відсоткова ставка :</string>
+    <string name="nominal_rate">Номінальна ставка :</string>
     <string name="percent">%</string>
     <string name="if_inflation">З врахуванням інфляції</string>
     <string name="calculate">Розрахувати</string>
@@ -20,5 +21,6 @@
     <!-- Errors -->
     <string name="empty_field">Це поле не може бути пустим</string>
     <string name="find_discount_rate">Знайти еквівалентну ефективну облікову ставку</string>
+    <string name="times">разів</string>
 
 </resources>

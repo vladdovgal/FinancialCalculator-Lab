@@ -109,13 +109,22 @@
                 />
         </LinearLayout>
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/interestRateHint"
+            app:layout_constraintBottom_toBottomOf="@id/interestRateHint"
+            />
+
         <TextView
             android:id="@+id/interestRateHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/interest_rate"
             app:layout_constraintTop_toBottomOf="@id/editTextValuesGroup"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/switchRate"
             android:layout_marginTop="@dimen/margin_medium"
             android:textStyle="bold"
             android:textSize="@dimen/font_medium"
@@ -123,24 +132,50 @@
 
         <EditText
             android:id="@+id/etInterestRate"
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/interestRateHint"
-            app:layout_constraintTop_toTopOf="@id/interestRateHint"
-            app:layout_constraintBottom_toBottomOf="@id/interestRateHint"
-            android:layout_marginStart="@dimen/margin_medium"
+            app:layout_constraintEnd_toStartOf="@id/tvPercent"
+            app:layout_constraintTop_toTopOf="@id/tvTimes"
+            app:layout_constraintBottom_toBottomOf="@id/tvTimes"
+            android:layout_marginStart="@dimen/margin_small"
             android:inputType="numberDecimal"
             />
 
         <TextView
+            android:id="@+id/tvPercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/interestRateHint"
-            app:layout_constraintBottom_toBottomOf="@id/interestRateHint"
-            app:layout_constraintStart_toEndOf="@id/etInterestRate"
+            app:layout_constraintTop_toTopOf="@id/tvTimes"
+            app:layout_constraintBottom_toBottomOf="@id/tvTimes"
+            app:layout_constraintEnd_toStartOf="@id/etTimesPerYear"
+            android:layout_marginEnd="@dimen/margin_small"
             android:text="@string/percent"
             android:textStyle="bold"
             android:textSize="@dimen/font_medium"
+            />
+
+        <EditText
+            android:id="@+id/etTimesPerYear"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/tvTimes"
+            app:layout_constraintTop_toTopOf="@id/tvPercent"
+            app:layout_constraintBottom_toBottomOf="@id/tvPercent"
+            android:layout_marginStart="@dimen/margin_small"
+            android:inputType="number"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:id="@+id/tvTimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/editTextValuesGroup"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/times"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:textSize="@dimen/font_medium"
+            android:visibility="invisible"
             />
 
         <CheckBox
