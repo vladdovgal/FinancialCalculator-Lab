@@ -238,13 +238,22 @@
                 />
         </LinearLayout>
 
-        <com.anychart.AnyChartView
-            android:id="@+id/chart"
+        <FrameLayout
+            android:id="@+id/chartFrame"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/layoutResult"
-            app:layout_constraintStart_toStartOf="parent"
-            />
+            android:paddingTop="@dimen/margin_small"
+            >
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="invisible"
+                />
+        </FrameLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
