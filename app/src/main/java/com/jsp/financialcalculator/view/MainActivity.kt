@@ -2,31 +2,24 @@ package com.jsp.financialcalculator.view
 
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jsp.financialcalculator.R
-import com.jsp.financialcalculator.utils.ChartUtils
-import com.jsp.financialcalculator.utils.Parameter
-import com.jsp.financialcalculator.utils.WaysOfDecision
-import com.jsp.financialcalculator.utils.logI
+import com.jsp.financialcalculator.math_logic.WaysOfDecision
+import com.jsp.financialcalculator.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        var pastValue : Double = 0.0
-        var futureValue : Double = 0.0
-        var interestRate : Double = 0.0
-        var term : Int = 0
-        var unknownVariable : Parameter? = null
-        var isRateNominal = false
-        var chargesPerYear = 1
-    }
-
+    private var pastValue : Double = 0.0
+    private var futureValue : Double = 0.0
+    private var interestRate : Double = 0.0
+    private var term : Int = 0
+    private var unknownVariable : Parameter? = null
+    private var isRateNominal = false
     private var result : String = ""
-    var chartUtils = ChartUtils(this)
+    private var chartUtils = ChartUtils(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         btnCalculate.setOnClickListener {
             findSolution()
-            logI("Times per year : $chargesPerYear")
         }
 
         switchRate.setOnCheckedChangeListener { _, isChecked ->
@@ -63,10 +55,16 @@ class MainActivity : AppCompatActivity() {
     private fun findSolution() {
         if (validateInput()) return
 
-        var inflation = 0.0
-        if (etInflation.text.isNotEmpty() && cbIfInflation.isChecked) {
-            inflation = etInflation.text.toString().toDouble()
-        }
+        // if taking into account inflation
+        val inflation = if (etInflation.text.isNotEmpty() && cbIfInflation.isChecked) {
+            etInflation.text.toString().toDouble()
+        } else 0.0
+        // if using nominal rate
+        val chargesPerYear: Int = if(
+            etTimesPerYear.text.isNotEmpty() && etTimesPerYear.text.toString().toInt() != 0) {
+            Integer.parseInt(etTimesPerYear.text.toString())
+        } else 1
+
         when(unknownVariable) {
             Parameter.FV -> {
                 result = resources.getString(
@@ -75,14 +73,14 @@ class MainActivity : AppCompatActivity() {
                         pastValue,
                         term,
                         interestRate,
-                        inflation,
+                        inflation,  
                         chargesPerYear
                     )
                         .round(4)
                         .toString()
                 )
                 // build chart using
-                val data = chartUtils.tabulateFutureValue(pastValue, interestRate, term, inflation)
+                val data = chartUtils.tabulateFutureValue(pastValue, interestRate, term, inflation, chargesPerYear)
                 chartUtils.buildLinearChart(data, this)
                 chart.invalidate() // refresh data in chart
                 chart.visibility = View.VISIBLE
@@ -142,10 +140,16 @@ class MainActivity : AppCompatActivity() {
             etFutureValue.error = resources.getString(R.string.empty_field)
         }
 
-        if (etPastValue.text.isNotEmpty()) {
+        if (etPastValue.text.isNotEmpty() ) {
             pastValue = etPastValue.text.toString().toDouble()
         } else if (unknownVariable != Parameter.PV) {
             etPastValue.error = resources.getString(R.string.empty_field)
+        }
+
+        if (etPastValue.text.isNotEmpty()  && etFutureValue.text.isNotEmpty()) {
+            if (etPastValue.text.toString().toDouble() > etFutureValue.text.toString().toDouble()) {
+                Toast.makeText(this, resources.getString(R.string.pv_more_fv), Toast.LENGTH_LONG).show()
+            }
         }
 
         if (etTerm.text.isNotEmpty()) {
@@ -158,14 +162,6 @@ class MainActivity : AppCompatActivity() {
             interestRate = etInterestRate.text.toString().toDouble()
         } else {
             etInterestRate.error = resources.getString(R.string.empty_field)
-        }
-
-        // if using nominal rate
-        chargesPerYear = if(
-            etTimesPerYear.text.isNotEmpty() && etTimesPerYear.text.toString().toInt() != 0) {
-            Integer.parseInt(etTimesPerYear.text.toString())
-        } else {
-            1
         }
         return false
     }
@@ -216,11 +212,3 @@ class MainActivity : AppCompatActivity() {
             }
         }
 }
-
-
-// My extension functions
-fun EditText.clearError() {
-    error = null
-}
-
-fun Double.round(decimals: Int = 2): Double = "%.${decimals}f".format(this).toDouble()

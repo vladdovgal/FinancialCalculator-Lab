@@ -16,25 +16,13 @@
         >
 
         <TextView
-            android:id="@+id/intro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/intro"
-            android:textSize="@dimen/font_medium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"
-            />
-
-        <TextView
             android:id="@+id/choose_unknown_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
             android:text="@string/choose_unknown"
             android:textSize="@dimen/font_medium"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/intro"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="20dp"
             />
 
@@ -174,7 +162,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/times"
             android:layout_marginTop="@dimen/margin_medium"
-            android:textSize="@dimen/font_medium"
+            android:textSize="@dimen/font_small"
             android:visibility="invisible"
             />
 

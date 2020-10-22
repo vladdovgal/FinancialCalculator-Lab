@@ -1,11 +1,12 @@
-package com.jsp.financialcalculator.utils
+package com.jsp.financialcalculator.math_logic
 
 import kotlin.math.log
 import kotlin.math.pow
 
 object WaysOfDecision {
+
     private const val YEAR_BASE = 365
-    // todo implement nominal rate
+
     fun findFutureValue(pastValue : Double, term : Int, interestRate : Double, inflation : Double, chargesPerYear : Int) : Double {
         val (years , fraction) = simplifyTerm(term)
         val (interestRateDecimal, inflationRateDecimal) = Pair(interestRate * 0.01, inflation* 0.01)

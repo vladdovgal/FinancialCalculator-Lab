@@ -10,11 +10,10 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.jsp.financialcalculator.R
-import com.jsp.financialcalculator.view.MainActivity.Companion.chargesPerYear
-import com.jsp.financialcalculator.view.round
+import com.jsp.financialcalculator.math_logic.WaysOfDecision
 
 class ChartUtils(val activity: Activity) {
-    fun tabulateFutureValue(pastValue : Double, interestRate : Double, term : Int, inflation : Double) : Map<Int, Double>{
+    fun tabulateFutureValue(pastValue : Double, interestRate : Double, term : Int, inflation : Double, chargesPerYear : Int) : Map<Int, Double>{
         val tabulatedFun = mutableMapOf<Int, Double>()
         for(i in 0..term) {
             tabulatedFun[i] = WaysOfDecision.findFutureValue(
@@ -25,12 +24,9 @@ class ChartUtils(val activity: Activity) {
                 chargesPerYear = chargesPerYear
             )
         }
-
-        tabulatedFun.forEach { (index, value) ->
-            logI("Day $index : FV = ${value.round(5)}")
-        }
         return tabulatedFun
     }
+
     fun buildLinearChart(data : Map<Int, Double>, context: Context) {
         val chart : LineChart = activity.findViewById(R.id.chart)
         chart.setTouchEnabled(true)

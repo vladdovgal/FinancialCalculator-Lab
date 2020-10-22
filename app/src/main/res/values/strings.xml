@@ -8,7 +8,7 @@
     <string name="past_value_hint">Past value</string>
     <string name="future_value_hint">Future value</string>
     <string name="term_in_days">Term (in days)</string>
-    <string name="interest_rate">Відсоткова ставка :</string>
+    <string name="interest_rate">Відсоткова ставка</string>
     <string name="nominal_rate">Номінальна ставка :</string>
     <string name="percent">%</string>
     <string name="if_inflation">З врахуванням інфляції</string>
@@ -17,10 +17,11 @@
     <string name="pv_equals">PV = %s</string>
     <string name="n_equals">n = %s років і %s днів</string>
     <string name="discount_rate">Еквівалентна ефективна облікова ставка: %s  %%</string>
+    <string name="times">разів</string>
 
     <!-- Errors -->
     <string name="empty_field">Це поле не може бути пустим</string>
     <string name="find_discount_rate">Знайти еквівалентну ефективну облікову ставку</string>
-    <string name="times">разів</string>
+    <string name="pv_more_fv">PV має бути меншим за FV</string>
 
 </resources>
