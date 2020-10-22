@@ -1,6 +1,6 @@
-# Transportation system
+# Financial calculator
 
-It is simple Android application designed to make perform calculations on a complex scheme of interest accrual.
+It is simple Android application (university lab) designed to make perform calculations on a complex scheme of interest accrual.
 
 Application features:
 - Search for unknown parameter (FV, PV, n)
